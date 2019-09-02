@@ -1,0 +1,32 @@
+<html><head>
+  <meta charset="utf-8">
+  <title> 뉴스 by Dable</title>
+  <link rel="stylesheet" href="./swipe.css">
+</head>
+<body >
+    <a href="http://naver.com" target="_top">힛미 탑</a>
+    <a href="http://naver.com" target="_blank">힛미 블랭크</a>
+    <a href="http://naver.com" target="_self">힛미 셀프</a>
+    <a href="http://naver.com" target="_parent">힛미 부모</a>
+
+    <script>
+      console.info("clinet script will be done.")
+      let as = document.querySelectorAll("a");
+      let attachEventHandler = (ele) => {
+        console.info("add event handler to " + JSON.stringify(ele));
+        let _attachEventHandler = (_ele_, _name_, _func_) => _ele_.addEventListener(_name_, _func_);
+        let _checkEventTrigged = (_name_) => (__e__) => {
+          console.info(__e__);
+          console.info(_name_ + " event is triggered" + JSON.stringify(__e__) + " event : " + JSON.stringify(event));
+        };
+        let _event_list_ = ["click", "dbclick",
+                          "mouseenter","mouseleave","mousemove","mouseout","mouseover","mouseup","mousedown",
+                          "touchcancel","touchend","touchmove","touchstart"];
+
+        _event_list_.forEach((_event_name_) => {
+          _attachEventHandler(ele, _event_name_, _checkEventTrigged(_event_name_));
+        })
+      };
+      as.forEach(attachEventHandler);
+    </script>
+</body></html>
