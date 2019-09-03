@@ -1,3 +1,5 @@
+console.info("start plugin.js");
+
 (function () { var define = undefined; (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
   var CommandQueue, util;
 
@@ -1122,6 +1124,7 @@
   };
 
   renderAd = function(elements, data) {
+    console.info("renderAd");
     document.title = data.title;
     elements.head.innerHTML = data.article_head;
     elements.body.innerHTML = util.stripAndExecuteScript(data.article_body);
@@ -1134,6 +1137,8 @@
 
   platformAd = {
     read: function(opts, callback) {
+      console.info("platformAd.read");
+
       var ad_url, campaign_id, channel, cid, content_id, method, service_id, service_name, uid;
       service_name = opts.service_name, cid = opts.cid, uid = opts.uid, campaign_id = opts.campaign_id, content_id = opts.content_id, method = opts.method, channel = opts.channel, service_id = opts.service_id;
       ad_url = (util.protocol()) + "//sp-api.dable.io";
