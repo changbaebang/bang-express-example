@@ -10,16 +10,14 @@
 <!-- Dable 스크립트 시작 / 문의 support@dable.io -->
 	<script>
     console.info("Dable Script on Head");
-    window.addEventListener("pageshow",() => {
-      (function(d,a,b,l,e,_) {
+		(function(d,a,b,l,e,_) {
 			d[b]=d[b]||function(){(d[b].q=d[b].q||[]).push(arguments)};e=a.createElement(l);
 			e.async=1;e.charset='utf-8';e.src='./plugin.js';
       _=a.getElementsByTagName(l)[0];_.parentNode.insertBefore(e,_);
       console.info("Dable Script on Head is done");
 			})(window,document,'dable','script');
 			//dable('setService', 'm.ytn.co.kr');
-			//dable('sendLog');
-    });
+      //dable('sendLog');
 
 	</script>
 <!-- Dable 스크립트 종료 / 문의 support@dable.io -->
@@ -32,11 +30,32 @@
 
 
 	<div id="dablewidget_6XgaZL7N" data-widget_id="6XgaZL7N">
-
+		<script>
+			(function(d,a,b,l,e,_) {
+				if(d[b]&&d[b].q)return;d[b]=function(){(d[b].q=d[b].q||[]).push(arguments)};
+				e=a.createElement(l);
+				e.async=1;
+				e.charset='utf-8';
+				e.src='./plugin.js';
+				_=a.getElementsByTagName(l)[0];
+				_.parentNode.insertBefore(e,_);
+			})
+			(window,document,'dable','script');
+			dable('setService', 'm.ytn.co.kr');
+			dable('sendLogOnce') ;
+			dable('renderWidget', 'dablewidget_6XgaZL7N');
+		</script>
 	</div>
 
 
 
-
+  <script>
+    window.onpageshow = function(event) {
+    if(event.persisted) {
+      // 뒤로가기로 재진입한 경우 페이지를 다시 로딩한다.
+      window.location.reload();
+    }
+  }
+  </script>
 	</body>
 </html>
