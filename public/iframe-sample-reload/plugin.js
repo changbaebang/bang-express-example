@@ -2552,6 +2552,7 @@ console.info("start plugin.js");
   popup_frame_id = "ds-frame-" + (parseInt(Math.random() * 999999));
 
   createPopupIfNotExists = function(arg) {
+    console.info("createPopupIfNotExists");
     var campaign_id, custom_h, custom_w, el, el2, el3, h, is_mobile, w;
     campaign_id = arg.campaign_id, is_mobile = arg.is_mobile, custom_w = arg.custom_w, custom_h = arg.custom_h;
     if (document.getElementById(popup_id)) {
@@ -3122,6 +3123,7 @@ console.info("start plugin.js");
   };
 
   insertWiderplanetAd = function(opts) {
+    console.info("insertWiderplanetAd");
     var ad_el, category, el, height, protocol, width, zoneid;
     el = opts.el, width = opts.width, height = opts.height, zoneid = opts.zoneid, category = opts.category;
     protocol = location.protocol;
@@ -3193,6 +3195,8 @@ console.info("start plugin.js");
   };
 
   preparePassback = function(el, w, h, opts) {
+    console.info("preparePassback");
+
     var passback_height, passback_url;
     passback_url = opts.passback_url, passback_height = opts.passback_height;
     return setTimeout(function() {
@@ -3802,6 +3806,7 @@ console.info("start plugin.js");
     };
 
     Widget.prototype.render_widget = function(dom_id, el, opts, set_item_ids) {
+      console.info("Widget.render_widget");
       return this.fetch_widget_items(el, set_item_ids, false, (function(_this) {
         return function(item_ids) {
           var widget_url;
@@ -3990,6 +3995,7 @@ console.info("start plugin.js");
   widgetScrollEventsShow = {};
 
   init = function(id, options) {
+    console.info("init");
     var appearWidget, appear_set, check, close_btn, el, h, h_hidden, ref, v;
     if (!(options != null ? options.enabled : void 0)) {
       return;
