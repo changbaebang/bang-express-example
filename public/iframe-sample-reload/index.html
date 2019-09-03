@@ -15,19 +15,17 @@
 			e.async=1;e.charset='utf-8';e.src='./plugin.js';
       _=a.getElementsByTagName(l)[0];_.parentNode.insertBefore(e,_);
       console.info("Dable Script on Head is done");
-			})(window,document,'dable','script');
+      })(window,document,'dable','script');
+      window.addEventListener("pageshow", () => {
+        dable('setService', 'm.ytn.co.kr');
+			  dable('sendLogOnce') ;
+        dable('renderWidget', 'dablewidget_6XgaZL7N');
+      });
 	</script>
 <!-- Dable 스크립트 종료 / 문의 support@dable.io -->
 	</head>
 	<body>
 	<div id="dablewidget_6XgaZL7N" data-widget_id="6XgaZL7N">
-		<script>
-      window.addEventListener("pageshow", () => {
-      dable('setService', 'm.ytn.co.kr');
-			dable('sendLogOnce') ;
-      dable('renderWidget', 'dablewidget_6XgaZL7N');
-      });
-		</script>
 	</div>
   <!--쉽게 해결하고 싶을 때<script>
     window.onpageshow = function(event) {
