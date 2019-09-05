@@ -1,0 +1,42 @@
+
+
+
+<!doctype html>
+<html lang="ko">
+	<head>
+		<title>한국의 뉴스 채널 YTN (채널24)</title>
+		<meta charset="utf-8">
+
+<!-- Dable 스크립트 시작 / 문의 support@dable.io -->
+	<script>
+    console.info("Dable Script on Head");
+		(function(d,a,b,l,e,_) {
+			d[b]=d[b]||function(){(d[b].q=d[b].q||[]).push(arguments)};e=a.createElement(l);
+      e.async=1;e.charset='utf-8';
+      e.src="//static.dable.io/dist/plugin.js";
+      _=a.getElementsByTagName(l)[0];_.parentNode.insertBefore(e,_);
+      console.info("Dable Script on Head is done");
+      })(window,document,'dable','script');
+
+      //
+      window.addEventListener("pageshow", () => {
+        dable('setService', 'm.ytn.co.kr');
+			  dable('sendLogOnce') ;
+        dable('renderWidget', 'dablewidget_6XgaZL7N');
+      });
+	</script>
+<!-- Dable 스크립트 종료 / 문의 support@dable.io -->
+	</head>
+	<body>
+	<div id="dablewidget_6XgaZL7N" data-widget_id="6XgaZL7N">
+	</div>
+  <!--쉽게 해결하고 싶을 때<script>
+    window.onpageshow = function(event) {
+    if(event.persisted) {
+      // 뒤로가기로 재진입한 경우 페이지를 다시 로딩한다.
+      window.location.reload();
+    }
+  }
+  </script>-->
+	</body>
+</html>
