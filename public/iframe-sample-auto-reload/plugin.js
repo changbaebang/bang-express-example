@@ -112,7 +112,7 @@
 
   qterm = require('./qterm.coffee');
 
-  crc32 = require('./crc32.js');
+  crc32 = require('./crc32.js.js');
 
   meta = require('./meta.coffee');
 
@@ -1825,7 +1825,7 @@
 
   JSONP = require('./JSONP.coffee');
 
-  crc32 = require('./crc32.js');
+  crc32 = require('./crc32.js.js');
 
   has_support = function() {
     return (typeof document !== "undefined" && document !== null ? document.querySelectorAll : void 0) != null;
@@ -3135,11 +3135,11 @@
 
   util = require('./util.coffee');
 
-  simplePostMessage = require('./ba-postmessage.js');
+  simplePostMessage = require('./ba-postmessage.js.js');
 
   adult = require('./adult.coffee');
 
-  lz = require('./lz-string.js');
+  lz = require('./lz-string.js.js');
 
   meta = require('./meta.coffee');
 
