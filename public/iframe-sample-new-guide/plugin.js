@@ -1,6 +1,4 @@
-(function () {
-  console.info("script load");
-  var define = undefined; (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function () { var define = undefined; (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
   var CommandQueue, util;
 
   util = require('./util.coffee');
@@ -57,7 +55,7 @@
 
   qterm = require('./qterm.coffee');
 
-  crc32 = require('./crc32.js.js');
+  crc32 = require('./crc32.js');
 
   meta = require('./meta.coffee');
 
@@ -1124,7 +1122,6 @@
   };
 
   renderAd = function(elements, data) {
-    console.info("renderAd");
     document.title = data.title;
     elements.head.innerHTML = data.article_head;
     elements.body.innerHTML = util.stripAndExecuteScript(data.article_body);
@@ -1137,8 +1134,6 @@
 
   platformAd = {
     read: function(opts, callback) {
-      console.info("platformAd.read");
-
       var ad_url, campaign_id, channel, cid, content_id, method, service_id, service_name, uid;
       service_name = opts.service_name, cid = opts.cid, uid = opts.uid, campaign_id = opts.campaign_id, content_id = opts.content_id, method = opts.method, channel = opts.channel, service_id = opts.service_id;
       ad_url = (util.protocol()) + "//sp-api.dable.io";
@@ -1753,7 +1748,7 @@
 
   JSONP = require('./JSONP.coffee');
 
-  crc32 = require('./crc32.js.js');
+  crc32 = require('./crc32.js');
 
   has_support = function() {
     return (typeof document !== "undefined" && document !== null ? document.querySelectorAll : void 0) != null;
@@ -2552,7 +2547,6 @@
   popup_frame_id = "ds-frame-" + (parseInt(Math.random() * 999999));
 
   createPopupIfNotExists = function(arg) {
-    console.info("createPopupIfNotExists");
     var campaign_id, custom_h, custom_w, el, el2, el3, h, is_mobile, w;
     campaign_id = arg.campaign_id, is_mobile = arg.is_mobile, custom_w = arg.custom_w, custom_h = arg.custom_h;
     if (document.getElementById(popup_id)) {
@@ -3056,11 +3050,11 @@
 
   util = require('./util.coffee');
 
-  simplePostMessage = require('./ba-postmessage.js.js');
+  simplePostMessage = require('./ba-postmessage.js');
 
   adult = require('./adult.coffee');
 
-  lz = require('./lz-string.js.js');
+  lz = require('./lz-string.js');
 
   meta = require('./meta.coffee');
 
@@ -3123,7 +3117,6 @@
   };
 
   insertWiderplanetAd = function(opts) {
-    console.info("insertWiderplanetAd");
     var ad_el, category, el, height, protocol, width, zoneid;
     el = opts.el, width = opts.width, height = opts.height, zoneid = opts.zoneid, category = opts.category;
     protocol = location.protocol;
@@ -3195,8 +3188,6 @@
   };
 
   preparePassback = function(el, w, h, opts) {
-    console.info("preparePassback");
-
     var passback_height, passback_url;
     passback_url = opts.passback_url, passback_height = opts.passback_height;
     return setTimeout(function() {
@@ -3806,7 +3797,6 @@
     };
 
     Widget.prototype.render_widget = function(dom_id, el, opts, set_item_ids) {
-      console.info("Widget.render_widget");
       return this.fetch_widget_items(el, set_item_ids, false, (function(_this) {
         return function(item_ids) {
           var widget_url;
@@ -3995,7 +3985,6 @@
   widgetScrollEventsShow = {};
 
   init = function(id, options) {
-    console.info("init");
     var appearWidget, appear_set, check, close_btn, el, h, h_hidden, ref, v;
     if (!(options != null ? options.enabled : void 0)) {
       return;
