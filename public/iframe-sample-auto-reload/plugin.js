@@ -1,11 +1,15 @@
-(function () {
-  console.info("script load");
-  var define = undefined; (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-  var CommandQueue, util;
+(function () { var define = undefined; (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+  var CommandQueue, event, util;
 
   util = require('./util.coffee');
 
+  event = require('./event.coffee');
+
   CommandQueue = (function() {
+    CommandQueue.prototype.commands = [];
+
+    CommandQueue.prototype.isEventListenerAttacted = false;
+
     function CommandQueue(executor) {
       this.executor = executor;
     }
@@ -14,10 +18,11 @@
       var cmd;
       cmd = Array.prototype.shift.apply(params);
       if (this.executor[cmd]) {
-        return this.executor[cmd].apply(this.executor, params);
+        this.executor[cmd].apply(this.executor, params);
       } else {
-        return util.debug("Unknown command: " + cmd);
+        util.debug("Unknown command: " + cmd);
       }
+      return Array.prototype.unshift.call(params, cmd);
     };
 
     CommandQueue.prototype.push = function(params) {
@@ -29,7 +34,57 @@
         }
         return;
       }
+      if (util.isBFCachedEnv() === true) {
+        this.saveCommand(params);
+      }
       return this.execute(params);
+    };
+
+    CommandQueue.prototype.saveCommand = function(params) {
+      if (params[0] !== "renderWidget") {
+        return;
+      }
+      util.debug("Command : " + JSON.stringify(params) + " will be saved.");
+      this.commands.push(params);
+      if (this.isEventHandlerReady() !== true) {
+        return this.setEventHandler();
+      }
+    };
+
+    CommandQueue.prototype.isEventHandlerReady = function() {
+      return this.isEventListenerAttacted;
+    };
+
+    CommandQueue.prototype.setEventHandlerReady = function(isReady) {
+      return this.isEventListenerAttacted = isReady;
+    };
+
+    CommandQueue.prototype.setEventHandler = function() {
+      event.addEvent(window, "pageshow", this.pageshowHandler.bind(this));
+      return this.setEventHandlerReady(true);
+    };
+
+    CommandQueue.prototype.pageshowHandler = function(e) {
+      if (e.persisted === false) {
+        return;
+      }
+      util.debug("history move is called");
+      event.removeEvent(window, "pageshow", this.pageshowHandler.bind(this));
+      event.addEvent(document, "rebuild-command", this.rebuildCommandHandler.bind(this));
+      return event.postEvent(document, "rebuild-command");
+    };
+
+    CommandQueue.prototype.rebuildCommandHandler = function() {
+      var command, i, len, tempCommands;
+      util.debug("rebuild-command event is posted with " + JSON.stringify(this.commands));
+      event.removeEvent(document, "rebuild-command", this.rebuildCommandHandler.bind(this));
+      tempCommands = this.commands;
+      this.commands = [];
+      for (i = 0, len = tempCommands.length; i < len; i++) {
+        command = tempCommands[i];
+        this.push(command);
+      }
+      return this.setEventHandlerReady(false);
     };
 
     return CommandQueue;
@@ -39,7 +94,7 @@
   module.exports = CommandQueue;
 
 
-  },{"./util.coffee":22}],2:[function(require,module,exports){
+  },{"./event.coffee":12,"./util.coffee":22}],2:[function(require,module,exports){
   var Executor, JSONP, Widget, ad, bridgeManager, cmsWidget, cookie, crc32, logger, mall, meta, pubsub, qterm, scrollManager, util,
     slice = [].slice;
 
@@ -1124,7 +1179,6 @@
   };
 
   renderAd = function(elements, data) {
-    console.info("renderAd");
     document.title = data.title;
     elements.head.innerHTML = data.article_head;
     elements.body.innerHTML = util.stripAndExecuteScript(data.article_body);
@@ -1137,8 +1191,6 @@
 
   platformAd = {
     read: function(opts, callback) {
-      console.info("platformAd.read");
-
       var ad_url, campaign_id, channel, cid, content_id, method, service_id, service_name, uid;
       service_name = opts.service_name, cid = opts.cid, uid = opts.uid, campaign_id = opts.campaign_id, content_id = opts.content_id, method = opts.method, channel = opts.channel, service_id = opts.service_id;
       ad_url = (util.protocol()) + "//sp-api.dable.io";
@@ -1462,7 +1514,7 @@
 
 
   },{}],12:[function(require,module,exports){
-  var addEvent, removeEvent;
+  var addEvent, postEvent, removeEvent;
 
   addEvent = function(obj, type, fn, attachEventKey) {
     if (attachEventKey == null) {
@@ -1491,9 +1543,29 @@
     }
   };
 
+  postEvent = function(obj, type, delay) {
+    var creator, requiredEvent;
+    if (delay == null) {
+      delay = 100;
+    }
+    requiredEvent = void 0;
+    creator = void 0;
+    if (obj.createEvent) {
+      creator = obj;
+    } else {
+      creator = document;
+    }
+    requiredEvent = creator.createEvent("Events");
+    requiredEvent.initEvent(type, true, false);
+    return setTimeout(function() {
+      return creator.dispatchEvent(requiredEvent, delay);
+    });
+  };
+
   module.exports = {
     addEvent: addEvent,
-    removeEvent: removeEvent
+    removeEvent: removeEvent,
+    postEvent: postEvent
   };
 
 
@@ -2552,7 +2624,6 @@
   popup_frame_id = "ds-frame-" + (parseInt(Math.random() * 999999));
 
   createPopupIfNotExists = function(arg) {
-    console.info("createPopupIfNotExists");
     var campaign_id, custom_h, custom_w, el, el2, el3, h, is_mobile, w;
     campaign_id = arg.campaign_id, is_mobile = arg.is_mobile, custom_w = arg.custom_w, custom_h = arg.custom_h;
     if (document.getElementById(popup_id)) {
@@ -2784,6 +2855,11 @@
       test_by_width = w <= 500;
       test_by_ua = util.isMobileDevice();
       return test_by_ua || test_by_width;
+    },
+    isIOSDevice: function() {
+      var n;
+      n = navigator.userAgent.toLowerCase();
+      return /ip(hone|ad)/i.test(n);
     },
     isScrollBottom: function(el, extra_px) {
       var doc, innerHeight, offsetHeight, ref1, ref2, ref3, ref4, ref5, win, y;
@@ -3037,6 +3113,9 @@
         style.innerHTML = code;
       }
       return document.getElementsByTagName("head")[0].appendChild(style);
+    },
+    isBFCachedEnv: function(userAgent) {
+      return util.isMobileDevice() && util.isIOSDevice();
     }
   };
 
@@ -3123,7 +3202,6 @@
   };
 
   insertWiderplanetAd = function(opts) {
-    console.info("insertWiderplanetAd");
     var ad_el, category, el, height, protocol, width, zoneid;
     el = opts.el, width = opts.width, height = opts.height, zoneid = opts.zoneid, category = opts.category;
     protocol = location.protocol;
@@ -3195,8 +3273,6 @@
   };
 
   preparePassback = function(el, w, h, opts) {
-    console.info("preparePassback");
-
     var passback_height, passback_url;
     passback_url = opts.passback_url, passback_height = opts.passback_height;
     return setTimeout(function() {
@@ -3806,7 +3882,6 @@
     };
 
     Widget.prototype.render_widget = function(dom_id, el, opts, set_item_ids) {
-      console.info("Widget.render_widget");
       return this.fetch_widget_items(el, set_item_ids, false, (function(_this) {
         return function(item_ids) {
           var widget_url;
@@ -3995,7 +4070,6 @@
   widgetScrollEventsShow = {};
 
   init = function(id, options) {
-    console.info("init");
     var appearWidget, appear_set, check, close_btn, el, h, h_hidden, ref, v;
     if (!(options != null ? options.enabled : void 0)) {
       return;
