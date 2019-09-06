@@ -65,6 +65,7 @@
     };
 
     CommandQueue.prototype.pageshowHandler = function(e) {
+      console.info(JSON.stringify(e));
       if (e.persisted === false) {
         return;
       }
