@@ -2860,7 +2860,7 @@
     isIOSDevice: function() {
       var n;
       n = navigator.userAgent.toLowerCase();
-      return /ip(hone|ad)/i.test(n);
+      return /ip(hone|od|ad)/i.test(n);
     },
     isScrollBottom: function(el, extra_px) {
       var doc, innerHeight, offsetHeight, ref1, ref2, ref3, ref4, ref5, win, y;
@@ -3116,7 +3116,7 @@
       return document.getElementsByTagName("head")[0].appendChild(style);
     },
     isBFCachedEnv: function(userAgent) {
-      return util.isMobileDevice() && util.isIOSDevice();
+      return true;//util.isMobileDevice() && util.isIOSDevice();
     }
   };
 
