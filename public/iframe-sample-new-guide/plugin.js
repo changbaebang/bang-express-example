@@ -11,9 +11,7 @@
 
     CommandQueue.prototype.isEventListenerAttached = false;
 
-    CommandQueue.prototype.attachedPageshowHandler = void 0;
-
-    CommandQueue.prototype.attachedRebuildCommandHandler = void 0;
+    CommandQueue.prototype.handlers = {};
 
     CommandQueue.prototype.savableCommands = ["renderwidget", "renderbridge"];
 
@@ -56,24 +54,47 @@
       util.debug("[saveCommand] Command : " + JSON.stringify(params) + " will be saved.");
       this.commands.push(params);
       util.debug("[saveCommand] Saved Commands : [" + this.commands.length + "] " + JSON.stringify(this.commands) + " are saved.");
-      if (this.isEventHandlerReady() !== true) {
-        return this.setEventHandler();
+      if (this.isPageShowEventHandlerReady() !== true) {
+        return this.attachPageShowEventHandler();
       }
     };
 
-    CommandQueue.prototype.isEventHandlerReady = function() {
-      return this.isEventListenerAttacted;
+    CommandQueue.prototype.isPageShowEventHandlerReady = function() {
+      return this.handlers["is" + "pageshow" + "Ready"];
     };
 
-    CommandQueue.prototype.setEventHandlerReady = function(isReady) {
-      return this.isEventListenerAttacted = isReady;
+    CommandQueue.prototype.attachHandler = function(eventName) {
+      return function() {
+        util.debug("[attachHandler] " + eventName + " handler is attached");
+        this.handlers[eventName] = this[eventName + "Handler"].bind(this);
+        event.addEvent(window, eventName, this.handlers[eventName]);
+        return this.handlers["is" + eventName + "Ready"] = true;
+      };
     };
 
-    CommandQueue.prototype.setEventHandler = function() {
-      this.attachedPageshowHandler = this.pageshowHandler.bind(this);
-      event.addEvent(window, "pageshow", this.attachedPageshowHandler);
-      util.debug("[setEventHandler] pageshow handler is attached");
-      return this.setEventHandlerReady(true);
+    CommandQueue.prototype.detachHandler = function(eventName) {
+      return function() {
+        util.debug("[detachHandler] " + eventName + " handler is dettached");
+        event.removeEvent(window, "eventName", this.handlers[eventName]);
+        this.handlers[eventName] = void 0;
+        return this.handlers["is" + eventName + "Ready"] = false;
+      };
+    };
+
+    CommandQueue.prototype.attachPageShowEventHandler = function() {
+      return this.attachHandler("pageshow");
+    };
+
+    CommandQueue.prototype.dettachPageShowEventHandler = function() {
+      return this.detachHandler("pageshow");
+    };
+
+    CommandQueue.prototype.attachRebuildEventHandler = function() {
+      return this.attachHandler("rebuild");
+    };
+
+    CommandQueue.prototype.dettachRebuildEventHandler = function() {
+      return this.detachHandler("rebuild");
     };
 
     CommandQueue.prototype.pageshowHandler = function(e) {
@@ -82,19 +103,15 @@
         return;
       }
       util.debug("[pageshowHandler] history move is called");
-      util.debug("[pageshowHandler] documenet" + JSON.stringify(document));
-      event.removeEvent(window, "pageshow", this.attachedPageshowHandler);
-      util.debug("[pageshowHandler] pageshow handler is detached");
-      this.attachedRebuildCommandHandler = this.rebuildCommandHandler.bind(this);
-      event.addEvent(document, "rebuild-command", this.attachedRebuildCommandHandler);
-      util.debug("[pageshowHandler] rebuild-command handler is detached");
-      return event.postEvent(document, "rebuild-command");
+      this.dettachPageShowEventHandler();
+      this.attachRebuildEventHandler();
+      return event.postEvent(document, "rebuild");
     };
 
-    CommandQueue.prototype.rebuildCommandHandler = function() {
+    CommandQueue.prototype.rebuildHandler = function() {
       var command, i, len, tempCommands;
-      util.debug("[rebuildCommandHandler] rebuild-command event is posted with " + JSON.stringify(this.commands));
-      event.removeEvent(document, "rebuild-command", this.attachedRebuildCommandHandler);
+      util.debug("[rebuildHandler] rebuild event is posted with " + JSON.stringify(this.commands));
+      this.dettachRebuildEventHandler();
       tempCommands = this.commands;
       this.commands = [];
       util.debug("[rebuildCommandHandler] Saved Command : [" + this.commands.length + "] " + JSON.stringify(this.commands) + " will be saved.");
@@ -103,8 +120,7 @@
         command = tempCommands[i];
         this.push(command);
       }
-      util.debug("[rebuildCommandHandler] Saved Command : [" + this.commands.length + "] " + JSON.stringify(this.commands) + " will be saved.");
-      return this.setEventHandlerReady(false);
+      return util.debug("[rebuildCommandHandler] Saved Command : [" + this.commands.length + "] " + JSON.stringify(this.commands) + " will be saved.");
     };
 
     return CommandQueue;
