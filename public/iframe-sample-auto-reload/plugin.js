@@ -71,7 +71,7 @@
 
     CommandQueue.prototype.detachHandler = function(eventName) {
       util.debug("[detachHandler] " + eventName + " handler is dettached");
-      event.removeEvent(window, "eventName", this.handlers[eventName]);
+      event.removeEvent(window, eventName, this.handlers[eventName]);
       return this.handlers[eventName] = void 0;
     };
 
