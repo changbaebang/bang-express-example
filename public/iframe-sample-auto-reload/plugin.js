@@ -6,10 +6,6 @@
 
   event = require('./event.coffee');
 
-  event.addEvent(window, "pageshow", (e) => {
-    util.debug("[global] e : " + e.persisted);
-  })
-
   CommandQueue = (function() {
     CommandQueue.prototype.commands = [];
 

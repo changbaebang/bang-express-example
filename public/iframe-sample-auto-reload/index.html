@@ -38,13 +38,16 @@
         dable('renderWidget', 'dablewidget_6XgaZL7N');
     //});
   </script>
-  <!--쉽게 해결하고 싶을 때<script>
+  <!--쉽게 해결하고 싶을 때-->
+  <script>
     window.onpageshow = function(event) {
-    if(event.persisted) {
+      console.info("[global] e : " + event.persisted)
+    //if(event.persisted) {
       // 뒤로가기로 재진입한 경우 페이지를 다시 로딩한다.
-      window.location.reload();
-    }
+      //window.location.reload();
+    //}
   }
-  </script>-->
+  </script>
+  <!---->
 	</body>
 </html>
