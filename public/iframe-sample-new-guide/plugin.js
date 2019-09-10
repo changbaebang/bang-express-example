@@ -45,7 +45,7 @@
 
     CommandQueue.prototype.saveCommand = function(params) {
       var ref;
-      if (!(params[0] || (ref = params[0].toLowerCase(), indexOf.call(this.savableCommands, ref) >= 0))) {
+      if (!(params[0] && (ref = params[0].toLowerCase(), indexOf.call(this.savableCommands, ref) >= 0))) {
         return;
       }
       util.debug("Command : " + JSON.stringify(params) + " will be saved.");
