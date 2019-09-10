@@ -27,7 +27,7 @@
       } else {
         util.debug("Unknown command: " + cmd);
       }
-      util.debug("[push] Command : " + JSON.stringify(params) + " will be done.");
+      util.debug("[execute] Command : " + JSON.stringify(params) + " is done.");
       return Array.prototype.unshift.call(params, cmd);
     };
 
@@ -64,21 +64,17 @@
     };
 
     CommandQueue.prototype.attachHandler = function(eventName) {
-      return function() {
-        util.debug("[attachHandler] " + eventName + " handler is attached");
-        this.handlers[eventName] = this[eventName + "Handler"].bind(this);
-        event.addEvent(window, eventName, this.handlers[eventName]);
-        return this.handlers["is" + eventName + "Ready"] = true;
-      };
+      util.debug("[attachHandler] " + eventName + " handler is attached");
+      this.handlers[eventName] = this[eventName + "Handler"].bind(this);
+      event.addEvent(window, eventName, this.handlers[eventName]);
+      return this.handlers["is" + eventName + "Ready"] = true;
     };
 
     CommandQueue.prototype.detachHandler = function(eventName) {
-      return function() {
-        util.debug("[detachHandler] " + eventName + " handler is dettached");
-        event.removeEvent(window, "eventName", this.handlers[eventName]);
-        this.handlers[eventName] = void 0;
-        return this.handlers["is" + eventName + "Ready"] = false;
-      };
+      util.debug("[detachHandler] " + eventName + " handler is dettached");
+      event.removeEvent(window, "eventName", this.handlers[eventName]);
+      this.handlers[eventName] = void 0;
+      return this.handlers["is" + eventName + "Ready"] = false;
     };
 
     CommandQueue.prototype.attachPageShowEventHandler = function() {
