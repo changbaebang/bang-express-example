@@ -76,12 +76,12 @@
     };
 
     CommandQueue.prototype.pageshowHandler = function(e) {
-      if (e.persisted === false) {
+      util.debug("[pageshowHandler] event" + e.persisted + " / " + JSON.stringify(e));
+      if (e.persisted !== true) {
         return;
       }
       util.debug("[pageshowHandler] history move is called");
       util.debug("[pageshowHandler] documenet" + JSON.stringify(document));
-      util.debug("[pageshowHandler] event" + JSON.stringify(e));
       event.removeEvent(window, "pageshow", this.attachedPageshowHandler);
       this.attachedRebuildCommandHandler = this.rebuildCommandHandler.bind(this);
       event.addEvent(document, "rebuild-command", this.attachedRebuildCommandHandler);
