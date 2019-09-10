@@ -1,9 +1,18 @@
 (function () { var define = undefined; (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-  var CommandQueue, util;
+  var CommandQueue, event, util,
+    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   util = require('./util.coffee');
 
+  event = require('./event.coffee');
+
   CommandQueue = (function() {
+    CommandQueue.prototype.commands = [];
+
+    CommandQueue.prototype.isEventListenerAttached = false;
+
+    CommandQueue.prototype.savableCommands = ["renderwidget", "renderbridge"];
+
     function CommandQueue(executor) {
       this.executor = executor;
     }
@@ -12,10 +21,11 @@
       var cmd;
       cmd = Array.prototype.shift.apply(params);
       if (this.executor[cmd]) {
-        return this.executor[cmd].apply(this.executor, params);
+        this.executor[cmd].apply(this.executor, params);
       } else {
-        return util.debug("Unknown command: " + cmd);
+        util.debug("Unknown command: " + cmd);
       }
+      return Array.prototype.unshift.call(params, cmd);
     };
 
     CommandQueue.prototype.push = function(params) {
@@ -27,7 +37,58 @@
         }
         return;
       }
+      if (util.isIOSDevice() === true) {
+        this.saveCommand(params);
+      }
       return this.execute(params);
+    };
+
+    CommandQueue.prototype.saveCommand = function(params) {
+      var ref;
+      if (!(params[0] || (ref = params[0].toLowerCase(), indexOf.call(this.savableCommands, ref) >= 0))) {
+        return;
+      }
+      util.debug("Command : " + JSON.stringify(params) + " will be saved.");
+      this.commands.push(params);
+      if (this.isEventHandlerReady() !== true) {
+        return this.setEventHandler();
+      }
+    };
+
+    CommandQueue.prototype.isEventHandlerReady = function() {
+      return this.isEventListenerAttacted;
+    };
+
+    CommandQueue.prototype.setEventHandlerReady = function(isReady) {
+      return this.isEventListenerAttacted = isReady;
+    };
+
+    CommandQueue.prototype.setEventHandler = function() {
+      event.addEvent(window, "pageshow", this.pageshowHandler.bind(this));
+      return this.setEventHandlerReady(true);
+    };
+
+    CommandQueue.prototype.pageshowHandler = function(e) {
+      if (e.persisted === false) {
+        return;
+      }
+      util.debug("history move is called");
+      event.removeEvent(window, "pageshow", this.pageshowHandler.bind(this));
+      event.addEvent(document, "rebuild-command", this.rebuildCommandHandler.bind(this));
+      return event.postEvent(document, "rebuild-command");
+    };
+
+    CommandQueue.prototype.rebuildCommandHandler = function() {
+      var command, i, len, tempCommands;
+      util.debug("rebuild-command event is posted with " + JSON.stringify(this.commands));
+      event.removeEvent(document, "rebuild-command", this.rebuildCommandHandler.bind(this));
+      tempCommands = this.commands;
+      this.commands = [];
+      for (i = 0, len = tempCommands.length; i < len; i++) {
+        command = tempCommands[i];
+        this.push(command);
+      }
+      return this.setEventHandlerReady(false);
     };
 
     return CommandQueue;
@@ -37,7 +98,7 @@
   module.exports = CommandQueue;
 
 
-  },{"./util.coffee":22}],2:[function(require,module,exports){
+  },{"./event.coffee":12,"./util.coffee":22}],2:[function(require,module,exports){
   var Executor, JSONP, Widget, ad, bridgeManager, cmsWidget, cookie, crc32, logger, mall, meta, pubsub, qterm, scrollManager, util,
     slice = [].slice;
 
@@ -1457,7 +1518,7 @@
 
 
   },{}],12:[function(require,module,exports){
-  var addEvent, removeEvent;
+  var addEvent, postEvent, removeEvent;
 
   addEvent = function(obj, type, fn, attachEventKey) {
     if (attachEventKey == null) {
@@ -1486,9 +1547,29 @@
     }
   };
 
+  postEvent = function(obj, type, delay) {
+    var creator, requiredEvent;
+    if (delay == null) {
+      delay = 100;
+    }
+    requiredEvent = void 0;
+    creator = void 0;
+    if (obj.createEvent) {
+      creator = obj;
+    } else {
+      creator = document;
+    }
+    requiredEvent = creator.createEvent("Events");
+    requiredEvent.initEvent(type, true, false);
+    return setTimeout(function() {
+      return creator.dispatchEvent(requiredEvent, delay);
+    });
+  };
+
   module.exports = {
     addEvent: addEvent,
-    removeEvent: removeEvent
+    removeEvent: removeEvent,
+    postEvent: postEvent
   };
 
 
@@ -2765,12 +2846,12 @@
     isSafari: function() {
       var n;
       n = navigator.userAgent.toLowerCase();
-      return n.indexOf('safari') > -1 && n.indexOf('chrome') === -1;
+      return n.indexOf('safari') !== -1 && n.indexOf('chrome') === -1 && n.indexOf('crios') === -1 && n.indexOf('fxios') === -1;
     },
     isMobileDevice: function() {
       var n;
       n = navigator.userAgent || "";
-      return /(android).+mobile|\(ip(hone|od);|opera m(ob|in)i/i.test(n);
+      return /(android).+mobile|\(.*ip(hone|od)|opera m(ob|in)i/i.test(n);
     },
     isMobileView: function() {
       var ref1, ref2, test_by_ua, test_by_width, w;
@@ -2778,6 +2859,11 @@
       test_by_width = w <= 500;
       test_by_ua = util.isMobileDevice();
       return test_by_ua || test_by_width;
+    },
+    isIOSDevice: function() {
+      var n;
+      n = navigator.userAgent.toLowerCase();
+      return /ip(hone|od|ad)/i.test(n);
     },
     isScrollBottom: function(el, extra_px) {
       var doc, innerHeight, offsetHeight, ref1, ref2, ref3, ref4, ref5, win, y;
