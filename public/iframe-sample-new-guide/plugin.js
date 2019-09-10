@@ -65,6 +65,9 @@
 
     CommandQueue.prototype.attachHandler = function(eventName) {
       util.debug("[attachHandler] " + eventName + " handler is attached");
+      if (this.handlers[eventName]) {
+        return;
+      }
       this.handlers[eventName] = this[eventName + "Handler"].bind(this);
       event.addEvent(window, eventName, this.handlers[eventName]);
       return this.handlers["is" + eventName + "Ready"] = true;
@@ -72,8 +75,6 @@
 
     CommandQueue.prototype.detachHandler = function(eventName) {
       util.debug("[detachHandler] " + eventName + " handler is dettached");
-      event.removeEvent(window, "eventName", this.handlers[eventName]);
-      this.handlers[eventName] = void 0;
       return this.handlers["is" + eventName + "Ready"] = false;
     };
 
