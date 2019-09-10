@@ -6,6 +6,10 @@
 
   event = require('./event.coffee');
 
+  event.addEvent(window, "pageshow", (e) => {
+    util.debug("[global] e : " + e.persisted);
+  })
+
   CommandQueue = (function() {
     CommandQueue.prototype.commands = [];
 
@@ -76,7 +80,7 @@
     };
 
     CommandQueue.prototype.pageshowHandler = function(e) {
-      util.debug("[pageshowHandler] event" + e.persisted + " / " + JSON.stringify(e));
+      util.debug("[pageshowHandler] event " + e.persisted + " / " + JSON.stringify(e));
       if (e.persisted !== true) {
         return;
       }
