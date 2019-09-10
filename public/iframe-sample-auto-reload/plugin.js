@@ -50,6 +50,7 @@
       }
       util.debug("Command : " + JSON.stringify(params) + " will be saved.");
       this.commands.push(params);
+      util.debug("Saved Command : [" + this.commands.length + "] " + JSON.stringify(this.commands) + " will be saved.");
       if (this.isEventHandlerReady() !== true) {
         return this.setEventHandler();
       }
@@ -84,10 +85,13 @@
       event.removeEvent(document, "rebuild-command", this.rebuildCommandHandler.bind(this));
       tempCommands = this.commands;
       this.commands = [];
+      util.debug("Saved Command : [" + this.commands.length + "] " + JSON.stringify(this.commands) + " will be saved.");
+      util.debug("Required Command : [" + tempCommands.length + "] " + JSON.stringify(tempCommands) + " will be sapushed.");
       for (i = 0, len = tempCommands.length; i < len; i++) {
         command = tempCommands[i];
         this.push(command);
       }
+      util.debug("Saved Command : [" + this.commands.length + "] " + JSON.stringify(this.commands) + " will be saved.");
       return this.setEventHandlerReady(false);
     };
 
