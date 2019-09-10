@@ -72,19 +72,22 @@
     CommandQueue.prototype.setEventHandler = function() {
       this.attachedPageshowHandler = this.pageshowHandler.bind(this);
       event.addEvent(window, "pageshow", this.attachedPageshowHandler);
+      util.debug("[setEventHandler] pageshow handler is attached");
       return this.setEventHandlerReady(true);
     };
 
     CommandQueue.prototype.pageshowHandler = function(e) {
-      util.debug("[pageshowHandler] event" + e.persisted + " / " + JSON.stringify(e));
+      util.debug("[pageshowHandler] event " + e.persisted + " / " + JSON.stringify(e));
       if (e.persisted !== true) {
         return;
       }
       util.debug("[pageshowHandler] history move is called");
       util.debug("[pageshowHandler] documenet" + JSON.stringify(document));
       event.removeEvent(window, "pageshow", this.attachedPageshowHandler);
+      util.debug("[pageshowHandler] pageshow handler is detached");
       this.attachedRebuildCommandHandler = this.rebuildCommandHandler.bind(this);
       event.addEvent(document, "rebuild-command", this.attachedRebuildCommandHandler);
+      util.debug("[pageshowHandler] rebuild-command handler is detached");
       return event.postEvent(document, "rebuild-command");
     };
 
