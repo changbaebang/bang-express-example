@@ -1,6 +1,5 @@
 (function () { var define = undefined; (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-  var CommandQueue, event, util,
-    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+  var CommandQueue, event, util;
 
   util = require('./util.coffee');
 
@@ -12,8 +11,6 @@
     CommandQueue.prototype.isEventListenerAttached = false;
 
     CommandQueue.prototype.handlers = {};
-
-    CommandQueue.prototype.savableCommands = ["renderwidget", "renderbridge"];
 
     function CommandQueue(executor) {
       this.executor = executor;
@@ -27,7 +24,6 @@
       } else {
         util.debug("Unknown command: " + cmd);
       }
-      util.debug("[execute] Command : " + JSON.stringify(params) + " is done.");
       return Array.prototype.unshift.call(params, cmd);
     };
 
@@ -47,13 +43,7 @@
     };
 
     CommandQueue.prototype.saveCommand = function(params) {
-      var ref;
-      if (!(params[0] && (ref = params[0].toLowerCase(), indexOf.call(this.savableCommands, ref) >= 0))) {
-        return;
-      }
-      util.debug("[saveCommand] Command : " + JSON.stringify(params) + " will be saved.");
       this.commands.push(params);
-      util.debug("[saveCommand] Saved Commands : [" + this.commands.length + "] " + JSON.stringify(this.commands) + " are saved.");
       if (this.isPageShowEventHandlerReady() !== true) {
         return this.attachPageShowEventHandler();
       }
@@ -64,13 +54,11 @@
     };
 
     CommandQueue.prototype.attachHandler = function(eventName) {
-      util.debug("[attachHandler] " + eventName + " handler is attached");
       this.handlers[eventName] = this[eventName + "Handler"].bind(this);
       return event.addEvent(window, eventName, this.handlers[eventName]);
     };
 
     CommandQueue.prototype.detachHandler = function(eventName) {
-      util.debug("[detachHandler] " + eventName + " handler is dettached");
       event.removeEvent(window, eventName, this.handlers[eventName]);
       return this.handlers[eventName] = void 0;
     };
@@ -96,11 +84,9 @@
     };
 
     CommandQueue.prototype.pageshowHandler = function(e) {
-      util.debug("[pageshowHandler] event " + e.persisted + " / " + JSON.stringify(e));
       if (e.persisted !== true) {
         return;
       }
-      util.debug("[pageshowHandler] history move is called");
       this.dettachPageShowEventHandler();
       this.attachRebuildEventHandler();
       return event.postEvent(document, "rebuild");
@@ -108,7 +94,6 @@
 
     CommandQueue.prototype.rebuildHandler = function() {
       var command, i, len, results, tempCommands;
-      util.debug("[rebuildHandler] rebuild event is posted");
       this.dettachRebuildEventHandler();
       tempCommands = this.commands;
       this.commands = [];
