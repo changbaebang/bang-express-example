@@ -1,5 +1,6 @@
 (function () { var define = undefined; (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-  var CommandQueue, event, util;
+  var CommandQueue, event, util,
+    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   util = require('./util.coffee');
 
@@ -8,7 +9,9 @@
   CommandQueue = (function() {
     CommandQueue.prototype.commands = [];
 
-    CommandQueue.prototype.isEventListenerAttacted = false;
+    CommandQueue.prototype.isEventListenerAttached = false;
+
+    CommandQueue.prototype.savableCommands = ["renderwidget", "renderbridge"];
 
     function CommandQueue(executor) {
       this.executor = executor;
@@ -41,7 +44,8 @@
     };
 
     CommandQueue.prototype.saveCommand = function(params) {
-      if (params[0] !== "renderWidget") {
+      var ref;
+      if (!(!params[0] || (ref = params[0].toLowerCase(), indexOf.call(savableCommands, ref) < 0))) {
         return;
       }
       util.debug("Command : " + JSON.stringify(params) + " will be saved.");
@@ -2842,12 +2846,12 @@
     isSafari: function() {
       var n;
       n = navigator.userAgent.toLowerCase();
-      return n.indexOf('safari') > -1 && n.indexOf('chrome') === -1;
+      return n.indexOf('safari') !== -1 && n.indexOf('chrome') === -1 && n.indexOf('crios') === -1 && n.indexOf('fxios') === -1;
     },
     isMobileDevice: function() {
       var n;
       n = navigator.userAgent || "";
-      return /(android).+mobile|\(ip(hone|od);|opera m(ob|in)i/i.test(n);
+      return /(android).+mobile|\(.*ip(hone|od)|opera m(ob|in)i/i.test(n);
     },
     isMobileView: function() {
       var ref1, ref2, test_by_ua, test_by_width, w;
