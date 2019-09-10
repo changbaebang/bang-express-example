@@ -41,12 +41,15 @@
   <!--쉽게 해결하고 싶을 때-->
   <script>
     window.onpageshow = function(event) {
-      console.info("[global] e : " + event.persisted)
+      console.info("[global - onpageshow] e : " + event.persisted)
     //if(event.persisted) {
       // 뒤로가기로 재진입한 경우 페이지를 다시 로딩한다.
       //window.location.reload();
     //}
-  }
+    }
+    window.onload = function(event) {
+      console.info("[global - onload] e : " + event.persisted)
+    }
   </script>
   <!---->
 	</body>
