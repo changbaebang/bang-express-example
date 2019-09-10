@@ -76,7 +76,7 @@
       }
       util.debug("[pageshowHandler] history move is called");
       util.debug("[pageshowHandler] documenet" + JSON.stringify(document));
-      util.debug(e);
+      util.debug("[pageshowHandler] event" + JSON.stringify(e));
       event.removeEvent(window, "pageshow", this.pageshowHandler.bind(this));
       event.addEvent(document, "rebuild-command", this.rebuildCommandHandler.bind(this));
       return event.postEvent(document, "rebuild-command");
