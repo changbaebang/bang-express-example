@@ -1,0 +1,41 @@
+
+
+
+<!doctype html>
+<html lang="ko">
+	<head>
+    <title>iOS iframe click bug with history back</title>
+    <meta charset="utf-8">
+
+<!-- Dable 스크립트 시작 / 문의 support@dable.io -->
+	<script>
+    console.info("Dable Script on Head");
+		(function(d,a,b,l,e,_) {
+			d[b]=d[b]||function(){(d[b].q=d[b].q||[]).push(arguments)};e=a.createElement(l);
+      e.async=1;e.charset='utf-8';
+      e.src="//static.dable.io/dist/plugin.js";
+      _=a.getElementsByTagName(l)[0];_.parentNode.insertBefore(e,_);
+      console.info("Dable Script on Head is done");
+      })(window,document,'dable','script');
+
+      //
+      //window.addEventListener("pageshow", () => {
+      //  dable('setService', 'm.ytn.co.kr');
+			//  dable('sendLogOnce') ;
+      //  dable('renderWidget', 'dablewidget_6XgaZL7N');
+      //});
+	</script>
+<!-- Dable 스크립트 종료 / 문의 support@dable.io -->
+	</head>
+	<body>
+	<div id="dablewidget_6XgaZL7N" data-widget_id="6XgaZL7N">
+  </div>
+  <script>
+    //window.addEventListener("pageshow", () => {
+        dable('setService', 'm.ytn.co.kr');
+			  dable('sendLogOnce') ;
+        dable('renderWidget', 'dablewidget_6XgaZL7N');
+    //});
+  </script>
+	</body>
+</html>
