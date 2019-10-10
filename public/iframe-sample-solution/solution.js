@@ -45,15 +45,15 @@ let addLazyClick = (ele) => {
 
   ele.addEventListener("touchend", (_event_) => {
     if(isMoved === false) {
-      let _lazyCilckTimer_ = undefined;
+      let _lazyClickTimer_ = undefined;
       let _remove_timer_ = () => {
-        if(_lazyCilckTimer_){
-          console.info("remove timer " + _lazyCilckTimer_);
-          clearTimeout(_lazyCilckTimer_);
-          _lazyCilckTimer_ = undefined;
+        if(_lazyClickTimer_){
+          console.info("remove timer " + _lazyClickTimer_);
+          clearTimeout(_lazyClickTimer_);
+          _lazyClickTimer_ = undefined;
         }
       };
-      _lazyCilckTimer_ = setTimeout(() => {
+      _lazyClickTimer_ = setTimeout(() => {
         console.info("remove " + triggingEventName + " handler for cleartimer");
         target.removeEventListener(triggingEventName, _remove_timer_);
 
