@@ -23,7 +23,7 @@
     <script>
       dable('setService', 'standard_widget');
       dable('renderWidget', 'dablewidget_GlGeZnox');
-      window.addEventListener("pageshow", () => {
+      window.addEventListener("pageshow", (e) => {
         if (e.persisted === true) {
           console.log("BFCache!!")
       }
