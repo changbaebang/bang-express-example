@@ -11,6 +11,8 @@
     e.charset='utf-8';e.src='./plugin.js';
     _=a.getElementsByTagName(l)[0];_.parentNode.insertBefore(e,_);
     })(window,document,'dable','script');
+    dable('setService', 'ck101.com');
+    dable('sendLog');
 	</script>
 <!-- Dable 스크립트 종료 / 문의 support@dable.io -->
 	</head>
@@ -19,9 +21,12 @@
     <div id="dablewidget_GlGeZnox" data-widget_id="GlGeZnox">
     </div>
     <script>
+      dable('setService', 'standard_widget');
+      dable('renderWidget', 'dablewidget_GlGeZnox');
       window.addEventListener("pageshow", () => {
-        dable('setService', 'standard_widget');
-        dable('renderWidget', 'dablewidget_GlGeZnox');
+        if (e.persisted === true) {
+          console.log("BFCache!!")
+      }
       });
     </script>
 	</body>
