@@ -50,7 +50,7 @@
     };
 
     CommandQueue.prototype.isEventHandlerReady = function(eventName) {
-      return this.handlers[eventName];
+      return !!this.handlers[eventName];
     };
 
     CommandQueue.prototype.attachHandler = function(eventName) {
