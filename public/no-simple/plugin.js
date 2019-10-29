@@ -52,15 +52,17 @@
     };
 
     CommandQueue.prototype.isEventHandlerReady = function(eventName) {
-      return this.handlers[eventName];
+      return !!this.handlers[eventName];
     };
 
     CommandQueue.prototype.attachHandler = function(eventName) {
+      console.info("attachHandler" + eventName);
       this.handlers[eventName] = this[eventName + "Handler"].bind(this);
       return event.addEvent(window, eventName, this.handlers[eventName]);
     };
 
     CommandQueue.prototype.detachHandler = function(eventName) {
+      console.info("detachHandler" + eventName);
       event.removeEvent(window, eventName, this.handlers[eventName]);
       return this.handlers[eventName] = void 0;
     };
@@ -87,8 +89,10 @@
 
     CommandQueue.prototype.pageshowHandler = function(e) {
       if (e.persisted !== true) {
+        console.info("pageshowHandler without e.persisted " + e.persisted);
         return;
       }
+      console.info("pageshowHandler with e.persisted " + e.persisted);
       this.dettachPageShowEventHandler();
       this.attachRebuildEventHandler();
       return event.postEvent(document, "rebuild");
