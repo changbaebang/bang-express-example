@@ -1709,7 +1709,6 @@
   };
 
   sendActionLog = function(info, callback) {
-    console.info("sendActionLog - " + JSON.stringify(info));
     var collect_visit_log_once_a_day, d, payload, payloadAd, seconds, service_name, service_type, url;
     service_type = info.service.service_type;
     service_name = info.site || info.service.service_name;
@@ -1740,6 +1739,7 @@
       var ref, ref1, ref2, ref3;
       if (data !== "OK") {
         util.debug(data);
+        console.info(JOSN.stringify(data));
       }
       if (callback) {
         callback();
@@ -1797,6 +1797,8 @@
         };
       })(this), 3000);
     }
+    console.info("sendActionLog - " + JSON.stringify(info));
+
     logAdNetworkPixel(info.payco_log_url);
     logAdNetworkPixel(info.kakao_log_url);
     return logAdNetworkPixel(info.adx_log_url);
@@ -2419,6 +2421,7 @@
   };
 
   getRefererPattern = function(url) {
+    console.info("getRefererPattern : " + url);
     var i, len, p, pattern;
     pattern = null;
     for (i = 0, len = REFERER_PATTERNS.length; i < len; i++) {
@@ -3125,6 +3128,8 @@
     getReferrer: function() {
       var r, ref1, ref2;
       r = document.referrer;
+      console.info("getReferrer : " + r);
+
       if ((r != null ? r.indexOf('api.dable.io/widgets') : void 0) > -1) {
         return decodeURIComponent(((ref1 = r.split('from=')[1]) != null ? (ref2 = ref1.split('&')) != null ? ref2[0] : void 0 : void 0) || r);
       }
