@@ -52,7 +52,7 @@
     };
 
     CommandQueue.prototype.isEventHandlerReady = function(eventName) {
-      return !!this.handlers[eventName];
+      return this.handlers[eventName];
     };
 
     CommandQueue.prototype.attachHandler = function(eventName) {
@@ -95,6 +95,7 @@
       console.info("pageshowHandler with e.persisted " + e.persisted);
       this.dettachPageShowEventHandler();
       this.attachRebuildEventHandler();
+      console.info("post rebuild");
       return event.postEvent(document, "rebuild");
     };
 
