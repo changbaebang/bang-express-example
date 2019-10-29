@@ -1239,7 +1239,7 @@
     service_name = opts.service_name, uid = opts.uid, ad_id = opts.ad_id, cid = opts.cid, method = opts.method, channel = opts.channel;
     ref = ad_id.split('-'), campaign_id = ref[0], content_id = ref[1];
     e = encodeURIComponent;
-    logUrl = ((util.protocol()) + "//sp-api-staging.dable.io/services/" + (e(service_name))) + ("/users/" + (e(uid)) + "/campaigns/" + (e(campaign_id))) + ("/contents/" + (e(content_id)) + "/inlinkview" + duration + "s");
+    logUrl = ((util.protocol()) + "//sp-api.dable.io/services/" + (e(service_name))) + ("/users/" + (e(uid)) + "/campaigns/" + (e(campaign_id))) + ("/contents/" + (e(content_id)) + "/inlinkview" + duration + "s");
     return JSONP.get(logUrl, {
       cid: cid,
       method: method,
@@ -2826,10 +2826,10 @@
       return null;
     },
     api_server_domain: function() {
-      return (typeof window !== "undefined" && window !== null ? window.TEST_API_SERVER_DOMAIN : void 0) || "api-staging.dable.io";
+      return (typeof window !== "undefined" && window !== null ? window.TEST_API_SERVER_DOMAIN : void 0) || "api.dable.io";
     },
     sp_api_server_domain: function() {
-      return (typeof window !== "undefined" && window !== null ? window.TEST_SP_API_SERVER_DOMAIN : void 0) || "sp-api-staging.dable.io";
+      return (typeof window !== "undefined" && window !== null ? window.TEST_SP_API_SERVER_DOMAIN : void 0) || "sp-api.dable.io";
     },
     set_protocol: function(p) {
       return _protocol = p;
@@ -3116,7 +3116,6 @@
     getReferrer: function() {
       var r, ref1, ref2;
       r = document.referrer;
-      console.info("getReferrer : " + r);
       if ((r != null ? r.indexOf('api.dable.io/widgets') : void 0) > -1) {
         return decodeURIComponent(((ref1 = r.split('from=')[1]) != null ? (ref2 = ref1.split('&')) != null ? ref2[0] : void 0 : void 0) || r);
       }
@@ -3916,6 +3915,10 @@
             widget_url = ((util.protocol()) + "//" + (util.api_server_domain())) + ("/bridge/services/" + (encodeURIComponent(opts.site)) + "/item/" + (encodeURIComponent(opts.bridge_item_id)));
           } else if (opts.widget_id) {
             widget_url = ((util.protocol()) + "//" + (util.api_server_domain())) + ("/widgets/id/" + opts.widget_id) + (opts.uid && ("/users/" + opts.uid) || "");
+            widget_url = ((util.protocol()) + "//" + (util.api_server_domain())) + ("/widgets/id/" + opts.widget_id);
+            opts.debug = 1;
+            opts.nolog = 1;
+            opts.test = 1;
           } else if (opts.site) {
             widget_url = ((util.protocol()) + "//" + (util.api_server_domain())) + ("/widgets/services/" + (encodeURIComponent(opts.site))) + (opts.uid && ("/users/" + opts.uid) || "");
           } else {
