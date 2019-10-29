@@ -38,9 +38,9 @@
         }
         return;
       }
-      /* if (util.isIOSDevice() === true) {
+      if (util.isIOSDevice() === true) {
         this.saveCommand(params);
-      } */
+      }
       return this.execute(params);
     };
 
