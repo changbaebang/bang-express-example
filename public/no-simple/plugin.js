@@ -3916,7 +3916,7 @@
           } else if (opts.widget_id) {
             widget_url = ((util.protocol()) + "//" + (util.api_server_domain())) + ("/widgets/id/" + opts.widget_id) + (opts.uid && ("/users/" + opts.uid) || "");
             widget_url = ((util.protocol()) + "//" + (util.api_server_domain())) + ("/widgets/id/" + opts.widget_id);
-            opts.debug = 1;
+            // opts.debug = 1;
             opts.nolog = 1;
             opts.test = 1;
           } else if (opts.site) {
