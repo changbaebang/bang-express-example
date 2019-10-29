@@ -1709,6 +1709,7 @@
   };
 
   sendActionLog = function(info, callback) {
+    console.info("sendActionLog - " + JSON.stringify(info));
     var collect_visit_log_once_a_day, d, payload, payloadAd, seconds, service_name, service_type, url;
     service_type = info.service.service_type;
     service_name = info.site || info.service.service_name;
