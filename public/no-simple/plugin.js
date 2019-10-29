@@ -24,6 +24,8 @@
       } else {
         util.debug("Unknown command: " + cmd);
       }
+      console.info("execute " + cmd);
+
       return Array.prototype.unshift.call(params, cmd);
     };
 
@@ -93,6 +95,7 @@
     };
 
     CommandQueue.prototype.rebuildHandler = function() {
+      console.info("rebuildHandler widget!");
       var command, i, len, results, tempCommands;
       this.dettachRebuildEventHandler();
       tempCommands = this.commands;
