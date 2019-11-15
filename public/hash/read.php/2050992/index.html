@@ -12,13 +12,14 @@
 
   try {
     if ( window.history ) {
+      console.info(window.history)
       window.history.pushState(null, null, '#_bridge');
-      console.log(window);
-      window.onhashchange =  () => {
+      console.log(window.history);
+      window.addEventListener("hashchange", () => {
       console.log("hashchange" + location.hash);
       window.history.replaceState(null, null, '/bridge');
       location.reload();
-      };
+      });
     }
   } catch (e) {console.error(e);}
 
