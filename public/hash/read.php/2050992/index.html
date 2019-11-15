@@ -2,6 +2,7 @@
 <!doctype html>
 <html lang="ko">
 <body>
+    <p>잇힝</p>
     <div id="lass-bottom-fixed-ad">
       <!-- Dable 하고정_EMPTY_320x50 위젯 시작/ 문의 http://dable.io -->
       <div id="dablewidget_BoxBzml8" data-widget_id="BoxBzml8"></div>
@@ -52,12 +53,12 @@
         try {
           if ( window.history ) {
             window.history.pushState(null, null, '#_bridge');
-            console.log($(window));
-            $(window).on('hashchange', function() {
-            console.log("hashchange");
+            console.log(window);
+            window.onhashchange =  () => {
+            console.log("hashchange" + location.hash);
             window.history.replaceState(null, null, '/bridge');
             location.reload();
-            });
+            };
           }
         } catch (e) {console.error(e);}
 
