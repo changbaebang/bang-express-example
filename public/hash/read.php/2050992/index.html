@@ -2,7 +2,6 @@
 <!doctype html>
 <html lang="ko">
 <body>
-
     <div id="lass-bottom-fixed-ad">
       <!-- Dable 하고정_EMPTY_320x50 위젯 시작/ 문의 http://dable.io -->
       <div id="dablewidget_BoxBzml8" data-widget_id="BoxBzml8"></div>
@@ -53,6 +52,7 @@
         try {
           if ( window.history ) {
             window.history.pushState(null, null, '#_bridge');
+            console.log($(window));
             $(window).on('hashchange', function() {
             console.log("hashchange");
             window.history.replaceState(null, null, '/bridge');
