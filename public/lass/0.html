@@ -1,0 +1,20 @@
+<html>
+<head>
+  <title>1</title>
+</head>
+<body>
+  <p>I am 0 page.</p>
+<script>
+try {
+  if ( window.history ) {
+    window.history.pushState(null, "## 브릿지", '#_bridge');
+    window.addEventListener("hashchange", () => {
+      console.log("hashchange" + location.hash);
+      window.history.replaceState(null, "간다 브릿지", '/lass/bridge');
+      location.reload();
+    });
+  }
+} catch (e) {console.error(e);}
+</script>
+</body>
+</html>
