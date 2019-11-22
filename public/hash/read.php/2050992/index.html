@@ -556,7 +556,7 @@ top:0;
         try {
           if ( window.history ) {
             window.history.pushState(null, null, '#_bridge');
-            $(window).bind('hashchange', function() {
+            window.addEventListener("hashchange", () => {
             window.history.replaceState(null, null, '/bridge');
             location.reload();
             });
