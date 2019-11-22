@@ -104,9 +104,9 @@ g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'js/sauron.js'; s.
 /* /Sauron Eyes */
 
 
-  __dispatch.push(['event', 'accessNewsPC']);
-  ga('send', 'event', 'accessNews', 'PC', ( ( location && location.pathname ) ? location.pathname : '' ));
-  __sauron.push(['event', 'PC']);
+  __dispatch.push(['event', 'accessNewsMB']);
+  ga('send', 'event', 'accessNews', 'Mobile', ( ( location && location.pathname ) ? location.pathname : '' ));
+  __sauron.push(['event', 'Mobile']);
 
 </script>
 <script>
@@ -520,51 +520,29 @@ $(document).one('scroll', function(){
       z-index:999;
     }
     </style>
-    <div id="lass-bottom-fixed-ad">
-      <!-- Dable 하고정_EMPTY_320x50 위젯 시작/ 문의 http://dable.io -->
-      <div id="dablewidget_BoxBzml8" data-widget_id="BoxBzml8"></div>
-      <!-- Dable 하고정_EMPTY_320x50 위젯 종료/ 문의 http://dable.io -->
-    </div>
-    <!-- Dable 하A_그리드6_EMPTY 위젯 시작/ 문의 http://dable.io -->
-    <div id="dablewidget_KoEe8ZoB" data-widget_id="KoEe8ZoB"></div>
-    <!-- Dable 하A_그리드6_EMPTY 위젯 종료/ 문의 http://dable.io -->
 
-    <!-- Dable 하C_세로6IF_EMPTY 위젯 시작/ 문의 http://dable.io -->
-    <div id="dablewidget_1oVpz0lP" data-widget_id="1oVpz0lP"></div>
-    <!-- Dable 하C_세로6IF_EMPTY 위젯 종료/ 문의 http://dable.io -->
 
 <script>
 
-  // 기사내 광고 5, 10 번째 문단에 삽입.
-  var adLoaderFirst  = '<div id="dablewidget_GlY2NJXy" data-widget_id="GlY2NJXy"></div>';  // <!-- Dable 본문_EMPTY_300x250_상 위젯 시작/ 문의 http://dable.io -->
-  var adLoaderSecond = '<div id="dablewidget_6o3M01lZ" data-widget_id="6o3M01lZ"></div>'; // <!-- Dable 본문_EMPTY_300x250_하 위젯 시작/ 문의 http://dable.io -->
 
-  (function(d,a,b,l,e,_) {
-  if(d[b]&&d[b].q)return;d[b]=function(){(d[b].q=d[b].q||[]).push(arguments)};e=a.createElement(l);
-  e.async=1;e.charset='utf-8';e.src='//static.dable.io/dist/plugin.min.js';
-  _=a.getElementsByTagName(l)[0];_.parentNode.insertBefore(e,_);
-  })(window,document,'dable','script');
-  dable('setService', 'lass.co.kr');
-  dable('sendLogOnce');
-
-  if ( $(".post_content p").length > 5 ) {
-    $(".post_content p:eq(5)").after(adLoaderFirst);
-    dable('renderWidget', 'dablewidget_GlY2NJXy', {ignore_items: true});
-  }
-
-  if ( $(".post_content p").length > 10 ) {
-    $(".post_content p:eq(10)").after(adLoaderSecond);
-    dable('renderWidget', 'dablewidget_6o3M01lZ', {ignore_items: true});
-  }
-
-  dable('renderWidget', 'dablewidget_BoxBzml8', {ignore_items: true});
-  dable('renderWidget', 'dablewidget_KoEe8ZoB');
-  dable('renderWidget', 'dablewidget_1oVpz0lP');
 </script>
 
 
 
 
+
+<script>
+        try {
+          if ( window.history ) {
+            window.history.pushState(null, null, '#_bridge');
+            $(window).on('hashchange', function() {
+            window.history.replaceState(null, null, '/bridge');
+            location.reload();
+            });
+          }
+        } catch (e) {console.error(e);}
+
+</script>
 
 </body>
 </html>
