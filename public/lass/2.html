@@ -7,8 +7,8 @@
 <script>
 try {
   if ( window.history ) {
-    window.history.replaceState(null, "가자 브릿지", '/lass/bridge');
-    window.history.pushState(null, "왔네", '/lass/bridge/2');
+    window.history.replaceState({gogo:"dino"}, "가자 브릿지", '/lass/bridge');
+    window.history.pushState({i:"willback"}, "왔네", '/lass/bridge/2');
     window.addEventListener('popstate', (event) => {
       console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
       if(/\/bridge$/g.test(document.location) === true)
