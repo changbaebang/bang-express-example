@@ -1,0 +1,29 @@
+
+<!doctype html>
+<html lang="ko">
+<body>
+    <p>잇힝</p>
+<script>
+  /* (function(d,a,b,l,e,_) {
+  if(d[b]&&d[b].q)return;d[b]=function(){(d[b].q=d[b].q||[]).push(arguments)};e=a.createElement(l);
+  e.async=1;e.charset='utf-8';e.src='//static.dable.io/dist/plugin.min.js';
+  _=a.getElementsByTagName(l)[0];_.parentNode.insertBefore(e,_);
+  })(window,document,'dable','script');*/
+
+  try {
+    if ( window.history ) {
+      console.info(window.history)
+      window.history.pushState(null, null, '#_bridge');
+      console.log(window.history);
+      window.addEventListener("hashchange", () => {
+      console.log("hashchange" + location.hash);
+      window.history.replaceState(null, null, '/bridge');
+      location.reload();
+      });
+    }
+  } catch (e) {console.error(e);}
+
+</script>
+
+</body>
+</html>
