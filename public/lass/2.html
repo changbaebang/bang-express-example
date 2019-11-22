@@ -8,6 +8,11 @@
 try {
   if ( window.history ) {
     window.history.pushState(null, "브릿지", '/lass/bridge');
+    window.addEventListener("hashchange", () => {
+      console.log("hashchange" + location.hash);
+      window.history.replaceState(null, null, '/lass/bridge');
+      location.reload();
+    });
   }
 } catch (e) {console.error(e);}
 </script>
