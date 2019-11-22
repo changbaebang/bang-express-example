@@ -7,12 +7,8 @@
 <script>
 try {
   if ( window.history ) {
-    window.history.pushState(null, "브릿지", '/lass/bridge');
-    window.addEventListener("hashchange", () => {
-      console.log("hashchange" + location.hash);
-      window.history.replaceState(null, null, '/lass/bridge');
-      location.reload();
-    });
+    window.history.replaceState(null, "가자 브릿지", '/lass/bridge');
+    window.history.pushState(null, "왔네", '/lass/bridge/2');
   }
 } catch (e) {console.error(e);}
 </script>
