@@ -9,6 +9,9 @@ try {
   if ( window.history ) {
     window.history.replaceState(null, "가자 브릿지", '/lass/bridge');
     window.history.pushState(null, "왔네", '/lass/bridge/2');
+    window.addEventListener('popstate', (event) => {
+      console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
+    });
   }
 } catch (e) {console.error(e);}
 </script>
