@@ -9,7 +9,7 @@ try {
   if ( window.history ) {
     let stateObj = { foo: "bar" };
     window.history.pushState(stateObj, "## 브릿지", '#_bridge');
-    console.info("pushState done" + JSON.stringify(window.history));
+    console.info("pushState done" + window.history.length);
     window.addEventListener("hashchange", () => {
       console.log("hashchange" + location.hash);
       window.history.replaceState(null, "간다 브릿지", '/lass/bridge');
