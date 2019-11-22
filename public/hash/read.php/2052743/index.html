@@ -535,7 +535,8 @@ $(document).one('scroll', function(){
         try {
           if ( window.history ) {
             window.history.pushState(null, null, '#_bridge');
-            $(window).on('hashchange', function() {
+            // $(window).on('hashchange', function() {
+              window.addEventListener("hashchange", () => {
               console.log("hit me!")
             window.history.replaceState(null, null, '/bridge');
             location.reload();
