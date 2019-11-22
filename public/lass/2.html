@@ -5,6 +5,7 @@
 <body>
   <p>I am 2 page.</p>
 <script>
+(function(){
 try {
   if ( window.history ) {
     window.history.replaceState({gogo:"dino"}, "가자 브릿지", '/lass/bridge');
@@ -18,6 +19,7 @@ try {
     });
   }
 } catch (e) {console.error(e);}
+})();
 </script>
 </body>
 </html>

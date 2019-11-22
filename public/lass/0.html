@@ -16,6 +16,7 @@
   </div>
 
 <script>
+(function(){
 try {
   if ( window.history ) {
     let stateObj = { foo: "bar" };
@@ -28,6 +29,7 @@ try {
     });
   }
 } catch (e) {console.error(e);}
+});
 </script>
 </body>
 </html>

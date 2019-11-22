@@ -5,6 +5,7 @@
 <body>
   <p>I am 1 page.</p>
 <script>
+(function() {
 try {
   if ( window.history ) {
     let stateObj = { foo: "bar" };
@@ -17,6 +18,7 @@ try {
     });
   }
 } catch (e) {console.error(e);}
+})();
 </script>
 </body>
 </html>
