@@ -10,7 +10,7 @@ try {
     window.history.pushState(null, "## 브릿지", '#_bridge');
     window.addEventListener("hashchange", () => {
       console.log("hashchange" + location.hash);
-      window.history.replaceState(null, null, '/lass/bridge');
+      window.history.replaceState(null, "간다 브릿지", '/lass/bridge');
       location.reload();
     });
   }
